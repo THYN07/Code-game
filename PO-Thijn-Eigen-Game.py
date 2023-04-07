@@ -3,6 +3,7 @@ import random
 import time
 import ctypes
 import tkinter.messagebox
+from start_menu import start_menu
 
 
 # Initialize Pygame and others
@@ -41,15 +42,40 @@ font = pygame.font.SysFont(None, 48)
 font2 = pygame.font.SysFont(None, 108)
 speler1text = font.render(text, True, (0, 0, 0))
 
-
 # ----------------------- HOOFDLOOP ----------------------- #
+def display_start_menu():
+    font = pygame.font.Font(None, 50)
+    new_game_text = font.render("Nieuw spel", True, (0, 0, 0))
+    quit_text = font.render("Spel stoppen", True, (0, 0, 0))
+    new_game_rect = new_game_text.get_rect(center=(640, 260))
+    quit_rect = quit_text.get_rect(center=(640, 460))
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                if new_game_rect.collidepoint(pos):
+                    game_loop()
+                elif quit_rect.collidepoint(pos):
+                    pygame.quit()
+
+
+        screen.fill((255, 255, 255))
+        screen.blit(new_game_text, new_game_rect)
+        screen.blit(quit_text, quit_rect)
+        pygame.display.update()
+
 while spelen == True:
 
-    # Check events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             spelen = False
-
+    choice = start_menu()
+    if choice == "new_game":
+        # Check events
         if event.type == pygame.KEYDOWN:
 
             if event.key == pygame.K_UP and selected_arrow == arrow_images[0]:
